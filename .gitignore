@@ -1,7 +1,9 @@
+.DS_Store
 yarn-error.log
 .vscode
+CS.code-workspace
+node_modules
+yarn.lock
+package-lock.json
 coverage
 dist/*
-package-lock.json
-CS.code-workspace
-.DS_Store
