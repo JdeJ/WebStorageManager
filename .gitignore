@@ -1,0 +1,7 @@
+yarn-error.log
+.vscode
+coverage
+dist/*
+package-lock.json
+CS.code-workspace
+.DS_Store
