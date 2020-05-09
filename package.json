@@ -5,7 +5,9 @@
     "main": "dist/index.js",
     "scripts": {
         "build": "tsc",
-        "test": "jest"
+        "ci": "yarn test-build & npm t & wait",
+        "test": "jest",
+        "test-build": "yarn build && node test-build.js"
     },
     "repository": {
         "type": "git",
@@ -25,10 +27,12 @@
         "url": "https://github.com/JdeJ/WebStorageManager/issues"
     },
     "homepage": "https://github.com/JdeJ/WebStorageManager#readme",
+    "dependencies": {},
     "devDependencies": {
-        "jest": "^26.0.1",
-        "typescript": "^3.8.3",
-        "ts-jest": "^25.5.0",
-        "@types/jest": "^25.2.1"
-    }
+        "@types/jest": "^25.2",
+        "jest": "^26.0",
+        "ts-jest": "^25.5",
+        "typescript": "^3.8"
+    },
+    "type": "module"
 }

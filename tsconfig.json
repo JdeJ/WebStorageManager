@@ -1,11 +1,30 @@
 {
     "compilerOptions": {
         "outDir": "dist",
-        "module": "ESNext",
-        "target": "es5",
-        "sourceMap": true
+        "sourceMap": true,
+        "declaration": true,
+        "target": "ES5",
+        "lib": [
+            "ESNext",
+            "DOM"
+        ],
+        "allowJs": true,
+        "downlevelIteration": true,
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "pretty": true,
+        "strict": true,
+        "strictFunctionTypes": false
     },
     "include": [
-        "src/**/*.ts"
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules",
+        "**/*.spec.ts"
     ]
 }
