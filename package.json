@@ -4,8 +4,9 @@
     "description": "A tiny library for handling WebStorage",
     "main": "dist/index.js",
     "scripts": {
-        "build": "tsc",
+        "build": "yarn clean && tsc",
         "ci": "yarn test-build & npm t & wait",
+        "clean": "rm -Rf dist && mkdir dist",
         "test": "jest",
         "test-build": "yarn build && node test-build.js"
     },
