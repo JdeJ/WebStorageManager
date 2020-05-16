@@ -1,10 +1,15 @@
-export type Storage = 'sessionStorage' | 'localStorage';
+export type WebStorage = 'sessionStorage' | 'localStorage' | 'windowStorage';
 
-export interface WebStorage {
-    length: number;
-    setItem(key: string, value: string): void;
-    getItem(key: string): string | null;
-    removeItem(key: string): void;
-    clear(): void;
-    key(index: number): string | null;
+export interface StoreItem {
+    key: string;
+    value: string;
 }
+
+export type EventListenerCb = (ev: StorageEvent) => unknown
+
+export const STORE_SPACE_KEY = 'StoreSpace';
+
+export type NavigatorSpace = {
+    localStorage: number;
+    sessionStorage: number;
+};
