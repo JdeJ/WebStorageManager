@@ -5,7 +5,7 @@ export interface StoreItem {
     value: string;
 }
 
-export type EventListenerCb = (ev: StorageEvent) => unknown
+export type EventListenerCb = () => void
 
 export const STORE_SPACE_KEY = 'StoreSpace';
 

@@ -1,4 +1,4 @@
-import { EventListenerCb, NavigatorSpace, STORE_SPACE_KEY, WebStorage } from "./types";
+import { NavigatorSpace, STORE_SPACE_KEY, WebStorage } from "./types";
 import { WindowStorage } from "./windowStorage";
 
 export class WebStorageManager implements Storage {
@@ -13,6 +13,8 @@ export class WebStorageManager implements Storage {
     private constructor(webStorage: WebStorage = 'localStorage') {
         this.type = webStorage;
         this.storage = WebStorageManager[webStorage];
+
+        this.storeChangeListener();
     }
 
     static getInstance(webStorage: WebStorage): WebStorageManager {
@@ -198,7 +200,29 @@ export class WebStorageManager implements Storage {
         return JSON.stringify(WebStorageManager.getContent(this.type));
     }
 
-    addStoreChangeEvent(cb: EventListenerCb): void {
-        window.addEventListener('storage', cb);
+    addStoreChangeEvent(cb: Function): void {
+        this.storeChangeListener(cb);
+    }
+
+    private storeChangeListener(cb?: Function): void {
+        window.addEventListener('storage', (ev: StorageEvent) => {
+            let str = `The key '${ev.key}' has been `;
+
+            if (ev.newValue === null) {
+                str += `removed.`;
+            } else if (ev.oldValue === null) {
+                str += `addded. \nNew Value: ${ev.newValue}`;
+            } else {
+                str += `changed. \nOld Value: ${ev.oldValue} \nNew Value: ${ev.newValue}`
+            }
+
+            console.warn(str);
+
+            this.usedSpace = undefined;
+            this.availableSpace = undefined;
+            if (cb !== undefined) {
+                cb(ev);
+            }
+        });
     }
 }
