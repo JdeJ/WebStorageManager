@@ -1,4 +1,4 @@
-import { NavigatorSpace, STORE_SPACE_KEY, WebStorage } from "./types";
+import { NavigatorSpace, STORE_SPACE_KEY, Value, WebStorage } from "./types";
 import { WindowStorage } from "./windowStorage";
 
 export class WebStorageManager implements Storage {
@@ -97,7 +97,7 @@ export class WebStorageManager implements Storage {
             }
         }
         total = Math.floor(Math.round(total * 100) / 100);
-        WebStorageManager[webStorage].setItem(STORE_SPACE_KEY, JSON.stringify(total))
+        WebStorageManager[webStorage].setItem(STORE_SPACE_KEY, JSON.stringify({ data: total, expires: 0 }))
         return total;
     }
 
@@ -122,7 +122,7 @@ export class WebStorageManager implements Storage {
         return 'WebStorageManager';
     }
 
-    setItem<T = string>(key: string, value: T): void {
+    setItem<T = string>(key: string, value: T, expires?: number): void {
         if (value === undefined) {
             throw new Error('"undefined" is not allowed value.')
         }
@@ -132,7 +132,13 @@ export class WebStorageManager implements Storage {
             throw new Error(`There is not enough space in WebStorage "${this.type}".`)
         }
 
-        this.storage.setItem(key, JSON.stringify(value));
+        const data: Value<T> = {
+            data: value,
+            expires: expires !== undefined ? expires + Date.now() : 0
+        };
+
+
+        this.storage.setItem(key, JSON.stringify(data));
         this.usedSpace = undefined;
         this.availableSpace = undefined;
     }
@@ -140,7 +146,18 @@ export class WebStorageManager implements Storage {
     getItem<T = string>(key: string): T | null {
         const i = this.storage.getItem(key);
 
-        return i !== null ? <T>JSON.parse(i) : null;
+        if (i === null) {
+            return null;
+        }
+
+        const value: Value<T> = <Value<T>>JSON.parse(i);
+
+        if (value.expires > 0 && value.expires - Date.now() < 0) {
+            this.removeItem(key);
+            throw new Error(`The key "${key}" is no longer available (availability expires).`)
+        }
+
+        return value.data;
     }
 
     key(index: number): string | null {
@@ -206,14 +223,14 @@ export class WebStorageManager implements Storage {
 
     private storeChangeListener(cb?: Function): void {
         window.addEventListener('storage', (ev: StorageEvent) => {
-            let str = `The key '${ev.key}' has been `;
+            let str;
 
             if (ev.newValue === null) {
-                str += `removed.`;
+                str = `The key '${ev.key}' has been removed.`;
             } else if (ev.oldValue === null) {
-                str += `addded. \nNew Value: ${ev.newValue}`;
+                str = `New key has been addded: {Key: ${ev.key}, Value:${ev.newValue}}`;
             } else {
-                str += `changed. \nOld Value: ${ev.oldValue} \nNew Value: ${ev.newValue}`
+                str = `The key '${ev.key}' has been changed. New Value: ${ev.newValue}.`;
             }
 
             console.warn(str);
