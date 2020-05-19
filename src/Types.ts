@@ -1,9 +1,14 @@
 export type WebStorage = 'sessionStorage' | 'localStorage' | 'windowStorage';
 
-export interface StoreItem {
+export interface Item<T> {
     key: string;
-    value: string;
+    value: Value<T>;
 }
+
+export interface Value<T> {
+    data: T;
+    expires: number;
+};
 
 export type EventListenerCb = () => void
 
