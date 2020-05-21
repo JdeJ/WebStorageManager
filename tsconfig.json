@@ -1,13 +1,10 @@
 {
     "compilerOptions": {
         "outDir": "dist",
-        // "sourceMap": true,
+        "sourceMap": true,
         // "declaration": true,
-        "target": "ES5",
-        "lib": [
-            "ESNext",
-            "DOM"
-        ],
+        "module": "ESNext",
+        "target": "es5",
         "allowJs": true,
         "downlevelIteration": true,
         "esModuleInterop": true,
