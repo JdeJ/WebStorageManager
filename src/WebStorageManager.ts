@@ -74,7 +74,7 @@ export class WebStorageManager implements Storage {
             return Number(storeSpaceValue);
         }
 
-        const store: { [key: string]: string | {} } = WebStorageManager.getContent(webStorage);
+        const store: Record<string, unknown> = WebStorageManager.getContent(webStorage);
         let total = 0;
         let i = 0;
         const testValue = new Array(1025).join("a");
@@ -107,7 +107,6 @@ export class WebStorageManager implements Storage {
         for (const key in WebStorageManager[webStorage]) {
             if (WebStorageManager[webStorage].hasOwnProperty(key)) {
                 content[key] = WebStorageManager[webStorage][key];
-
             }
         }
 
