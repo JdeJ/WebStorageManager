@@ -22,6 +22,12 @@
     ],
     "exclude": [
         "node_modules",
-        "**/*.test.ts"
-    ]
+        "**/*.test.ts",
+        "coverage"
+    ],
+    "watchOptions": {
+        "watchFile": "useFsEvents",
+        "watchDirectory": "useFsEvents",
+        "fallbackPolling": "dynamicPriority"
+    }
 }

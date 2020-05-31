@@ -8,8 +8,9 @@
         "ci": "yarn test-build & npm t & wait",
         "clean": "rm -Rf dist && mkdir dist",
         "test": "jest",
-        "test-coverage": "jest --coverage",
-        "test-build": "yarn build && node test-build.js"
+        "test:coverage": "jest --coverage",
+        "test:build": "yarn build && node test-build.js",
+        "watch": "yarn clean && tsc --watch"
     },
     "repository": {
         "type": "git",
