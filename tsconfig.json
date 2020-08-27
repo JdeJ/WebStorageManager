@@ -1,33 +1,26 @@
 {
-    "compilerOptions": {
-        "outDir": "dist",
-        "sourceMap": true,
-        // "declaration": true,
-        "module": "ESNext",
-        "target": "ES5",
-        "allowJs": true,
-        "downlevelIteration": true,
-        "esModuleInterop": true,
-        "moduleResolution": "node",
-        "noImplicitAny": true,
-        "noImplicitThis": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "pretty": true,
-        "strict": true,
-        "strictFunctionTypes": false
-    },
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "node_modules",
-        "**/*.test.ts",
-        "coverage"
-    ],
-    "watchOptions": {
-        "watchFile": "useFsEvents",
-        "watchDirectory": "useFsEvents",
-        "fallbackPolling": "dynamicPriority"
-    }
+	"compilerOptions": {
+		"outDir": "dist",
+		"sourceMap": true,
+		"module": "ESNext",
+		"target": "ES5",
+		"allowJs": true,
+		"downlevelIteration": true,
+		"esModuleInterop": true,
+		"moduleResolution": "node",
+		"noImplicitAny": true,
+		"noImplicitThis": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"pretty": true,
+		"strict": true,
+		"strictFunctionTypes": false
+	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules", "**/*.test.ts", "coverage"],
+	"watchOptions": {
+		"watchFile": "useFsEvents",
+		"watchDirectory": "useFsEvents",
+		"fallbackPolling": "dynamicPriority"
+	}
 }
