@@ -17,95 +17,44 @@ describe('WebStorage space ', () => {
 	);
 });
 
-// test('Must clean WebStorge', () => {});
+describe('Must store at localStorage ', () => {
+	const storage = WebStorageManager.getInstance('localStorage');
 
-// describe('Must store and return data', () => {
-// 	function cleanStore() {
-// 		db.cleanUp();
-// 	}
+	afterEach(() => {
+		storage.clear();
+	});
 
-// 	afterEach(() => {
-// 		cleanUpDatabase(globalDatabase);
-// 	});
+	test.each([
+		[{ key: 'foo', value: 1 }, 1],
+		[{ key: 'bar', value: 'a'.repeat(10) }, 'a'.repeat(10)]
+	])(
+		'%o and return %s',
+		(data, expected) => {
+			storage.setItem(data.key, data.value);
+			expect(storage.getItem(data.key)).toEqual(expected);
+		},
+		5
+	);
 
-// 	const data = 'a'.repeat(4980736);
-// 	test('Must store data', () => {});
-// 	test('Must return stored data', () => {});
-// 	test('Must overwrite stored data', () => {});
-// 	test('Must fail on "undefined" value', () => {});
-// 	test('Must fail on unstored key', () => {});
-// 	test('Must fail when not enough space', () => {});
-// });
+	test('Must throw error if setting item with value "undefined"', () => {
+		function setUndefinedItem() {
+			storage.setItem('undefined', undefined);
+		}
 
-/**
-describe("storageQuota", () => {
-    describe("not set", () => {
-      it("should be 5000000 code units by default", () => {
-        const { localStorage, sessionStorage } = (new JSDOM(``, { url: "https://example.com" })).window;
-        const dataWithinQuota = "0".repeat(4000000);
+		expect(setUndefinedItem).toThrowError(
+			new Error('"undefined" is not allowed value.')
+		);
+	});
 
-        localStorage.setItem("foo", dataWithinQuota);
-        sessionStorage.setItem("bar", dataWithinQuota);
+	test('Must throw error if not enough space', () => {
+		function setTooBigItem() {
+			storage.setItem('tooBig', 'a'.repeat(10000000));
+		}
 
-        assert.strictEqual(localStorage.foo, dataWithinQuota);
-        assert.strictEqual(sessionStorage.bar, dataWithinQuota);
-
-        const dataExceedingQuota = "0".repeat(6000000);
-
-        assert.throws(() => localStorage.setItem("foo", dataExceedingQuota));
-        assert.throws(() => sessionStorage.setItem("bar", dataExceedingQuota));
-      });
-    });
-
-    describe("set to 10000 code units", () => {
-      it("should only allow setting data within the custom quota", () => {
-        const { localStorage, sessionStorage } = (new JSDOM(``, {
-          url: "https://example.com",
-          storageQuota: 10000
-        })).window;
-        const dataWithinQuota = "0".repeat(5);
-
-        localStorage.setItem("foo", dataWithinQuota);
-        sessionStorage.setItem("bar", dataWithinQuota);
-
-        assert.strictEqual(localStorage.foo, dataWithinQuota);
-        assert.strictEqual(sessionStorage.bar, dataWithinQuota);
-
-        const dataJustWithinQuota = "0".repeat(9995);
-
-        localStorage.foo = dataJustWithinQuota;
-        sessionStorage.bar = dataJustWithinQuota;
-
-        assert.strictEqual(localStorage.foo, dataJustWithinQuota);
-        assert.strictEqual(sessionStorage.bar, dataJustWithinQuota);
-
-        const dataExceedingQuota = "0".repeat(15000);
-
-        assert.throws(() => localStorage.setItem("foo", dataExceedingQuota));
-        assert.throws(() => sessionStorage.setItem("bar", dataExceedingQuota));
-      });
-    });
-
-    describe("set to 10000000 code units", () => {
-      it("should only allow setting data within the custom quota", () => {
-        const { localStorage, sessionStorage } = (new JSDOM(``, {
-          url: "https://example.com",
-          storageQuota: 10000000
-        })).window;
-        const dataWithinQuota = "0000000000".repeat(800000);
-
-        localStorage.someKey = dataWithinQuota;
-        sessionStorage.someKey = dataWithinQuota;
-
-        assert.strictEqual(localStorage.someKey, dataWithinQuota);
-        assert.strictEqual(sessionStorage.someKey, dataWithinQuota);
-
-        const dataExceedingQuota = "0000000000".repeat(1100000);
-
-        assert.throws(() => localStorage.setItem("foo", dataExceedingQuota));
-        assert.throws(() => sessionStorage.setItem("bar", dataExceedingQuota));
-      });
-    });
-  });
+		expect(setTooBigItem).toThrowError(
+			new Error('There is not enough space in WebStorage "localStorage".')
+		);
+	});
 });
-*/
+
+// test('Must fail on unstored key', () => {});
