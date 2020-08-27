@@ -1,5 +1,6 @@
 import { WebStorage } from './types';
 import { WebStorageManager } from './WebStorageManager';
+import { advanceBy } from 'jest-date-mock';
 
 describe('WebStorage space ', () => {
 	test.each([
@@ -53,6 +54,18 @@ describe('Must store at localStorage ', () => {
 
 		expect(setTooBigItem).toThrowError(
 			new Error('There is not enough space in WebStorage "localStorage".')
+		);
+	});
+
+	test('Must throw error if data availability expires', () => {
+		storage.setItem('dataExpired', 'foo', 5000);
+		advanceBy(4000);
+		expect(storage.getItem('dataExpired')).toEqual('foo');
+		advanceBy(2000);
+		expect(() => storage.getItem('dataExpired')).toThrowError(
+			new Error(
+				'The key "dataExpired" is no longer available (availability expires).'
+			)
 		);
 	});
 });

@@ -1,6 +1,4 @@
 {
-	"preset": "ts-jest",
-	"testEnvironment": "jsdom",
 	"collectCoverage": false,
 	"coverageReporters": ["html", "text"],
 	"coverageThreshold": {
@@ -10,5 +8,9 @@
 			"lines": 50,
 			"statements": 50
 		}
-	}
+	},
+	"preset": "ts-jest",
+	"setupFiles": ["jest-date-mock"],
+	"testEnvironment": "jsdom",
+	"timers": "fake"
 }
