@@ -79,7 +79,7 @@ export class WebStorageManager implements Storage {
 
 	private static storageTest(webStorage: WebStorage): number {
 		if (webStorage === 'windowStorage') {
-			return 4864;
+			return 9999999999;
 		}
 
 		const storeSpaceValue = WebStorageManager[webStorage].getItem(
