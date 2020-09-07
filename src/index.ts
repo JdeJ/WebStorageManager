@@ -1,3 +1,2 @@
-import { WebStorageManager } from "./WebStorageManager";
-export default WebStorageManager;
-Object.assign(module.exports, WebStorageManager);
+export { WebStorageManager } from './WebStorageManager';
+export { WindowStorage } from './WindowStorage';

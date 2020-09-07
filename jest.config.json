@@ -1,0 +1,16 @@
+{
+	"collectCoverage": false,
+	"coverageReporters": ["html", "text"],
+	"coverageThreshold": {
+		"global": {
+			"branches": 50,
+			"functions": 50,
+			"lines": 50,
+			"statements": 50
+		}
+	},
+	"preset": "ts-jest",
+	"setupFiles": ["jest-date-mock"],
+	"testEnvironment": "jsdom",
+	"timers": "fake"
+}

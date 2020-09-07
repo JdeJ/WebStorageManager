@@ -1,40 +1,45 @@
 {
-    "name": "webstoragemanager",
-    "version": "1.0.0",
-    "description": "A tiny library for handling WebStorage",
-    "main": "dist/index.js",
-    "scripts": {
-        "build": "yarn clean && tsc",
-        "ci": "yarn test-build & npm t & wait",
-        "clean": "rm -Rf dist && mkdir dist",
-        "test": "jest",
-        "test-build": "yarn build && node test-build.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/JdeJ/WebStorageManager.git"
-    },
-    "keywords": [
-        "WebStorage",
-        "Typescript",
-        "Javascript",
-        "Vanilla",
-        "LocalStorage",
-        "SessionStorage"
-    ],
-    "author": "JdeJ",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/JdeJ/WebStorageManager/issues"
-    },
-    "homepage": "https://github.com/JdeJ/WebStorageManager#readme",
-    "dependencies": {},
-    "devDependencies": {
-        "@types/jest": "^25.2",
-        "eslint": "^7.0.0",
-        "jest": "^26.0",
-        "ts-jest": "^25.5",
-        "typescript": "^3.8"
-    },
-    "type": "module"
+	"name": "webstoragemanager",
+	"version": "1.0.0",
+	"description": "A tiny library for handling WebStorage",
+	"main": "dist/index.js",
+	"scripts": {
+		"build": "yarn clean && tsc",
+		"ci": "yarn test-build & npm t & wait",
+		"clean": "rm -Rf dist && mkdir dist",
+		"test": "jest",
+		"test:verbose": "jest --verbose",
+		"test:coverage": "jest --coverage",
+		"test:build": "yarn build && node test-build.js",
+		"watch": "yarn clean && tsc --watch"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/JdeJ/WebStorageManager.git"
+	},
+	"keywords": [
+		"WebStorage",
+		"Typescript",
+		"Javascript",
+		"Vanilla",
+		"LocalStorage",
+		"SessionStorage"
+	],
+	"author": "JdeJ",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/JdeJ/WebStorageManager/issues"
+	},
+	"homepage": "https://github.com/JdeJ/WebStorageManager#readme",
+	"dependencies": {},
+	"devDependencies": {
+		"@types/jest": "^25.2",
+		"@types/jsdom": "^16.2.3",
+		"eslint": "^7.0",
+		"jest": "^25.5",
+		"jest-date-mock": "^1.0.8",
+		"jsdom": "^16.2",
+		"ts-jest": "^25.5",
+		"typescript": "^3.8"
+	}
 }
