@@ -109,20 +109,19 @@ test('Must fail while removing unstored key', () => {
 	);
 });
 
-// describe('Must fail if WebStorage is not supported', () => {
-// 	const dom = new jsdom.JSDOM('', {
-// 		url: 'https://example.org/',
-// 		referrer: 'https://example.com/',
-// 		contentType: 'text/html',
-// 		includeNodeLocations: true,
-// 		storageQuota: 5000000,
-// 	});
-// 	dom.window.localStorage = undefined;
-// 	expect(() => WebStorageManager.getInstance('localStorage')).toThrowError(
-// 		new Error('WebStorage "localStorage" is not supported.')
-// 	);
-// });
+describe('Used space', () => {
+	const storage = WebStorageManager.getInstance('localStorage');
+	const fakeData = 'a'.repeat(1000000);
 
-// describe('Must use WindowStorage if webStorage is not available', () => {});
+	beforeEach(() => {
+		storage.setItem('foo', fakeData);
+	});
 
-// test store change events
+	afterEach(() => {
+		storage.clear();
+	});
+
+	test('Must return item used space', () => {
+		expect(storage.getKeyUsedSpace('foo')).toEqual(1953);
+	});
+});
