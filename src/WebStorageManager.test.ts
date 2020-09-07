@@ -67,20 +67,38 @@ describe('Must store at localStorage ', () => {
 	});
 });
 
-test('Must throw error if data availability expires', () => {
+describe('Must return from localStorage ', () => {
 	const storage = WebStorageManager.getInstance('localStorage');
 
-	storage.setItem('dataExpired', 'foo', 5000);
+	beforeEach(() => {
+		storage.setItem('foo', 'bar');
+	});
 
-	advanceBy(4000);
-	expect(storage.getItem('dataExpired')).toEqual('foo');
+	afterEach(() => {
+		storage.clear();
+	});
 
-	advanceBy(2000);
-	expect(() => storage.getItem('dataExpired')).toThrowError(
-		new Error(
-			'The key "dataExpired" is no longer available (availability expires).'
-		)
-	);
+	test('Must return "bar" from "foo" key', () => {
+		expect(storage.getItem('foo')).toEqual('bar');
+	});
+
+	test('Must throw error if data availability expires', () => {
+		storage.setItem('dataExpired', 'foo', 5000);
+
+		advanceBy(4000);
+		expect(storage.getItem('dataExpired')).toEqual('foo');
+
+		advanceBy(2000);
+		expect(() => storage.getItem('dataExpired')).toThrowError(
+			new Error(
+				'The key "dataExpired" is no longer available (availability expires).'
+			)
+		);
+	});
+
+	test('Must return "null" if item doesn\'t exists on storage', () => {
+		expect(storage.getItem('bar')).toBeNull;
+	});
 });
 
 test('Must fail while removing unstored key', () => {
@@ -89,17 +107,6 @@ test('Must fail while removing unstored key', () => {
 	expect(() => storage.removeItem('foo')).toThrowError(
 		new Error('WebStorage "localStorage" has no "foo" key.')
 	);
-});
-
-test('Must return available space keeping existing data', () => {
-	const storage = WebStorageManager.getInstance('localStorage');
-	const fakeData = 'a'.repeat(1000000);
-
-	storage.setItem('foo', fakeData);
-
-	expect(storage.getItem('foo')).toEqual(fakeData);
-	expect(storage.getAvailableWebSpace()).toEqual(2911);
-	expect(storage.getItem('foo')).toEqual(fakeData);
 });
 
 // describe('Must fail if WebStorage is not supported', () => {
