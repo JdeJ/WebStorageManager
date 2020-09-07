@@ -124,4 +124,10 @@ describe('Used space', () => {
 	test('Must return item used space', () => {
 		expect(storage.getKeyUsedSpace('foo')).toEqual(1953);
 	});
+
+	test('Must return available space keeping existing data', () => {
+		expect(storage.getItem('foo')).toEqual(fakeData);
+		expect(storage.getAvailableWebSpace()).toEqual(2911);
+		expect(storage.getItem('foo')).toEqual(fakeData);
+	});
 });
