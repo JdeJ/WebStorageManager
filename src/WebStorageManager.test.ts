@@ -121,6 +121,12 @@ describe('Used space', () => {
 		storage.clear();
 	});
 
+	test('Must memoize usedSpace', () => {
+		expect(storage.getUsedSpace()).toEqual(1953);
+		console.log('StoreSpace ->', storage.getItem('StoreSpace'));
+		expect(storage.getUsedSpace()).toEqual(1953);
+	});
+
 	test('Must return item used space', () => {
 		expect(storage.getKeyUsedSpace('foo')).toEqual(1953);
 	});
