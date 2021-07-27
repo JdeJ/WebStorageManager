@@ -2,11 +2,16 @@
 	"name": "webstoragemanager",
 	"version": "1.0.0",
 	"description": "A tiny library for handling WebStorage",
+	"author": "JdeJ",
+	"license": "MIT",
+	"private": false,
 	"main": "dist/index.js",
+	"module": "dist/index.js",
 	"scripts": {
 		"build": "yarn clean && tsc",
 		"ci": "yarn test-build & npm t & wait",
 		"clean": "rm -Rf dist && mkdir dist",
+		"coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls",
 		"test": "jest",
 		"test:verbose": "jest --verbose",
 		"test:coverage": "jest --coverage",
@@ -25,8 +30,6 @@
 		"LocalStorage",
 		"SessionStorage"
 	],
-	"author": "JdeJ",
-	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/JdeJ/WebStorageManager/issues"
 	},
