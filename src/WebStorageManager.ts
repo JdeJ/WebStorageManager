@@ -1,4 +1,4 @@
-import { NavigatorSpace, STORE_SPACE_KEY, Value, WebStorage } from './types';
+import { Item, NavigatorSpace, STORE_SPACE_KEY, Value, WebStorage } from './types';
 import { WindowStorage } from './windowStorage';
 
 export class WebStorageManager implements Storage {
@@ -97,6 +97,7 @@ export class WebStorageManager implements Storage {
 		const testValue = 'a'.repeat(1024);
 		const spaceMaxToTest = 1024 * 10;
 		WebStorageManager[webStorage].clear();
+
 		while (i <= spaceMaxToTest) {
 			try {
 				WebStorageManager[webStorage].setItem(`${i}`, testValue);
@@ -108,6 +109,7 @@ export class WebStorageManager implements Storage {
 		}
 
 		WebStorageManager[webStorage].clear();
+
 		for (const key in store) {
 			if (store.hasOwnProperty(key)) {
 				WebStorageManager[webStorage].setItem(
@@ -121,6 +123,7 @@ export class WebStorageManager implements Storage {
 			STORE_SPACE_KEY,
 			JSON.stringify({ data: total, expires: 0 })
 		);
+
 		return total;
 	}
 
@@ -149,24 +152,23 @@ export class WebStorageManager implements Storage {
 			throw new Error('"undefined" is not allowed value.');
 		}
 
-		const newKeySpace =
-			Math.round(
-				(((key.length + JSON.stringify(value).length) * 2) / 1024) * 100
-			) / 100;
+		const data: Value<T> = {
+			data: value,
+			expires: expires !== undefined ? expires + Date.now() : 0
+		};
+
+		const newKeySpace = this.getSpaceNeededForItem({ key, value: data })
+
+
 		if (newKeySpace >= this.getAvailableWebSpace()) {
 			throw new Error(
 				`There is not enough space in WebStorage "${this.type}".`
 			);
 		}
 
-		const data: Value<T> = {
-			data: value,
-			expires: expires !== undefined ? expires + Date.now() : 0
-		};
-
+		this.addItemSizeToUsedSpace(newKeySpace);
+		this.removeItemSizeFromAvailableSpace(newKeySpace);
 		this.storage.setItem(key, JSON.stringify(data));
-		this.usedSpace = undefined;
-		this.availableSpace = undefined;
 	}
 
 	getItem<T = string>(key: string): T | null {
@@ -192,20 +194,25 @@ export class WebStorageManager implements Storage {
 		return this.storage.key(index);
 	}
 
-	removeItem(key: string): void {
-		if (!this.hasItem(key)) {
+	removeItem<T = string>(key: string): void {
+		const i = this.storage.getItem(key);
+
+		if (i === null) {
 			throw new Error(`WebStorage "${this.type}" has no "${key}" key.`);
 		}
 
+		const item: Item<T> = { key, value: <Value<T>>JSON.parse(i) }
+		const itemSize = this.getSpaceNeededForItem(item)
+
+		this.removeItemSizeFromUsedSpace(itemSize);
+		this.addItemSizeToAvailableSpace(itemSize);
 		this.storage.removeItem(key);
-		this.usedSpace = undefined;
-		this.availableSpace = undefined;
 	}
 
 	clear(): void {
 		this.storage.clear();
-		this.usedSpace = undefined;
-		this.availableSpace = undefined;
+		this.usedSpace = 0;
+		this.availableSpace = this.getAvailableWebSpace();
 	}
 
 	hasItem(key: string): boolean {
@@ -228,19 +235,30 @@ export class WebStorageManager implements Storage {
 		return this.usedSpace;
 	}
 
+
 	getKeyUsedSpace(key: string): number | undefined {
 		return this.hasItem(key)
 			? (this.usedSpace = Math.floor(
-					Math.round(
-						(((key.length + this.getItem(key)!.length) * 2) /
-							1024) *
-							100
-					) / 100
-			  ))
+				Math.round(
+					(((key.length + this.getItem(key)!.length) * 2) /
+						1024) *
+					100
+				) / 100
+			))
 			: undefined;
 	}
 
+	getSpaceNeededForItem<T>(item: Item<T>): number {
+		return Math.floor(Math.round(
+			(((item.key.length + JSON.stringify(item.value).length) * 2) / 1024) * 100
+		) / 100);
+	}
+
 	getAvailableWebSpace(): number {
+		if (this.availableSpace !== undefined) {
+			return this.availableSpace;
+		}
+
 		const storeSpace = WebStorageManager.getStoreSpace(this.type);
 		const usedSpace = this.getUsedSpace();
 
@@ -251,6 +269,22 @@ export class WebStorageManager implements Storage {
 
 	toString(): string {
 		return JSON.stringify(WebStorageManager.getContent(this.type));
+	}
+
+	addItemSizeToUsedSpace(itemSize: number): void {
+		this.usedSpace = this.getUsedSpace() + itemSize
+	}
+
+	removeItemSizeFromUsedSpace(itemSize: number): void {
+		this.usedSpace = this.getUsedSpace() - itemSize
+	}
+
+	addItemSizeToAvailableSpace(itemSize: number): void {
+		this.availableSpace = this.getAvailableWebSpace() - itemSize
+	}
+
+	removeItemSizeFromAvailableSpace(itemSize: number): void {
+		this.availableSpace = this.getAvailableWebSpace() + itemSize
 	}
 
 	addStoreChangeEvent(cb: Function): void {

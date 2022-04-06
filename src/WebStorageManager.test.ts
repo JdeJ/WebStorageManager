@@ -14,7 +14,6 @@ describe('WebStorage space ', () => {
 				WebStorageManager.getStoreSpace(<WebStorage>storage)
 			).toEqual(expected);
 		},
-		5
 	);
 });
 
