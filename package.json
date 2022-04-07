@@ -15,7 +15,6 @@
 		"test": "jest",
 		"test:verbose": "jest --verbose",
 		"test:coverage": "jest --coverage",
-		"test:build": "yarn build && node test-build.js",
 		"watch": "yarn clean && tsc --watch"
 	},
 	"repository": {

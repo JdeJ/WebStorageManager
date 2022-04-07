@@ -132,7 +132,7 @@ describe('Used space', () => {
 
 	test('Must return available space keeping existing data', () => {
 		expect(storage.getItem('foo')).toEqual(fakeData);
-		expect(storage.getAvailableWebSpace()).toEqual(2911);
+		expect(storage.getAvailableWebSpace()).toEqual(10723);
 		expect(storage.getItem('foo')).toEqual(fakeData);
 	});
 });
