@@ -2,8 +2,8 @@
 	"compilerOptions": {
 		"outDir": "dist",
 		"sourceMap": true,
-		"module": "ESNext",
-		"target": "ES5",
+		"module": "esnext",
+		"target": "es5",
 		"allowJs": true,
 		"downlevelIteration": true,
 		"esModuleInterop": true,

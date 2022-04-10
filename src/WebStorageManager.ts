@@ -1,4 +1,4 @@
-import { Item, NavigatorSpace, STORE_SPACE_KEY, Value, WebStorage } from './types';
+import { Item, NavigatorSpace, STORE_SPACE_KEY, Value, WebStorage, EventListenerCb } from './types';
 import { WindowStorage } from './windowStorage';
 
 export class WebStorageManager implements Storage {
@@ -127,8 +127,8 @@ export class WebStorageManager implements Storage {
 		return total;
 	}
 
-	static getContent(webStorage: WebStorage): {} {
-		const content: { [key: string]: unknown } = {};
+	static getContent(webStorage: WebStorage): Record<string, unknown> {
+		const content: Record<string, unknown> = {};
 
 		for (const key in WebStorageManager[webStorage]) {
 			if (WebStorageManager[webStorage].hasOwnProperty(key)) {
@@ -248,13 +248,13 @@ export class WebStorageManager implements Storage {
 			: undefined;
 	}
 
-	getSpaceNeededForItem<T>(item: Item<T>): number {
+	private getSpaceNeededForItem<T>(item: Item<T>): number {
 		return Math.floor(Math.round(
 			(((item.key.length + JSON.stringify(item.value).length) * 2) / 1024) * 100
 		) / 100);
 	}
 
-	getAvailableWebSpace(): number {
+	private getAvailableWebSpace(): number {
 		if (this.availableSpace !== undefined) {
 			return this.availableSpace;
 		}
@@ -271,27 +271,27 @@ export class WebStorageManager implements Storage {
 		return JSON.stringify(WebStorageManager.getContent(this.type));
 	}
 
-	addItemSizeToUsedSpace(itemSize: number): void {
+	private addItemSizeToUsedSpace(itemSize: number): void {
 		this.usedSpace = this.getUsedSpace() + itemSize
 	}
 
-	removeItemSizeFromUsedSpace(itemSize: number): void {
+	private removeItemSizeFromUsedSpace(itemSize: number): void {
 		this.usedSpace = this.getUsedSpace() - itemSize
 	}
 
-	addItemSizeToAvailableSpace(itemSize: number): void {
+	private addItemSizeToAvailableSpace(itemSize: number): void {
 		this.availableSpace = this.getAvailableWebSpace() - itemSize
 	}
 
-	removeItemSizeFromAvailableSpace(itemSize: number): void {
+	private removeItemSizeFromAvailableSpace(itemSize: number): void {
 		this.availableSpace = this.getAvailableWebSpace() + itemSize
 	}
 
-	addStoreChangeEvent(cb: Function): void {
+	addStoreChangeEvent(cb: EventListenerCb): void {
 		this.storeChangeListener(cb);
 	}
 
-	private storeChangeListener(cb?: Function): void {
+	private storeChangeListener(cb?: EventListenerCb): void {
 		window.addEventListener('storage', (ev: StorageEvent) => {
 			let str;
 

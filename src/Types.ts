@@ -10,7 +10,7 @@ export interface Value<T> {
     expires: number;
 };
 
-export type EventListenerCb = () => void
+export type EventListenerCb = (event: StorageEvent) => void
 
 export const STORE_SPACE_KEY = 'StoreSpace';
 

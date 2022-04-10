@@ -1,0 +1,15 @@
+## How to add a new feature / fix a bug
+
+1. Fork <code>@jdej/webstoragemanager</code> repo
+
+2. Create a branch from the <code>master</code> branch with your feature or bug fix
+
+3. Increase version, see more about versioning on [Semantic Versioning](https://semver.org/) page:
+
+   3.1) If you fixed a bug: increase the 'path' package version
+
+   3.2) If you added a new feature: increase 'minor' package version and check that there is no breaking change (run all tests).
+
+4. Once you fixed a bug (or added a new feature) and wrote a test for this scenario, you can create PR for it
+
+5. I will review it, and once everything is ok I will merge it and publish new feature to npm

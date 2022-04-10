@@ -1,12 +1,13 @@
 {
-	"name": "webstoragemanager",
+	"name": "@jdej/webstoragemanager",
 	"version": "1.0.0",
 	"description": "A tiny library for handling WebStorage",
-	"author": "JdeJ",
+	"author": "JdeJ (http://github.com/JdeJ)",
 	"license": "MIT",
 	"private": false,
 	"main": "dist/index.js",
 	"module": "dist/index.js",
+	"types": "dist/client.d.ts",
 	"scripts": {
 		"build": "yarn clean && tsc",
 		"ci": "yarn test-build & npm t & wait",
