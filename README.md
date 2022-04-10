@@ -75,6 +75,7 @@ storage.clear()
 ## 🤝 Contributing
 
 The best contribution is to use it and write feedback about it to this email: jorgedjuana@gmail.com or [create an issue on github](https://github.com/JdeJ/WebStorageManager/blob/master/CONTRIBUTING).
+But if you really like my work you can [buy me a lollipop](https://www.buymeacoffee.com/JdeJ).
 
 ## 📝 License
 
